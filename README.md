@@ -201,6 +201,7 @@ every container start, so an expired job-level token is not a problem.
 | Symptom | Cause / fix |
 | --- | --- |
 | `Bad credentials` / HTTP 401 at start | Token invalid, expired, or lacks **Administration: Read and write** on the repo (or `repo` scope for classic). Generate a new one. |
+| `curl: (22) ... error: 403` + `Resource not accessible by personal access token` at start | Fine-grained token has **Administration: Read-only**. Edit the token (or create a new one) and set **Repository permissions → Administration: Read and write**. This permission is what allows registering runners; a read-only token can list runners but not create a registration token. |
 | Runner never appears in GitHub | Wrong `REPO_URL` (must be the repo URL, no `.git` suffix needed), or the container is crash-looping: `./manage.sh logs`. |
 | Job stuck on *Waiting for a runner* | Label mismatch. The job uses `[self-hosted, linux, x64, python]`; check the labels shown on the runner page and in `RUNNER_LABELS`. |
 | `permission denied while trying to connect to the Docker daemon` | Your user is in the `docker` group but the shell session is old: log out/in or run `newgrp docker`. |
