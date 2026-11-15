@@ -1,0 +1,31 @@
+name: gha-runner
+
+services:
+  runner:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: gha-runner-python:local
+    container_name: gha-runner
+    restart: unless-stopped
+
+    # REPO_URL, ACCESS_TOKEN, RUNNER_NAME and RUNNER_LABELS come from .env.
+    env_file:
+      - .env
+    environment:
+      RUNNER_SCOPE: repo
+      RUNNER_WORKDIR: /_work
+      # The base image runs the runner as root inside this isolated container.
+      RUN_AS_ROOT: "true"
+      # Remove the PAT from the environment before workflow steps start.
+      UNSET_CONFIG_VARS: "true"
+
+    # Fedora uses SELinux; this keeps bind mounts working if you add some later.
+    security_opt:
+      - label=disable
+
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"

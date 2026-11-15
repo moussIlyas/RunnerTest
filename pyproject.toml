@@ -1,0 +1,11 @@
+[project]
+name = "gha-runner-demo"
+version = "0.1.0"
+description = "Tiny Python project used to verify a Dockerized self-hosted GitHub Actions runner"
+requires-python = ">=3.10"
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+pythonpath = ["."]
+testpaths = ["tests"]
+addopts = "-ra"
